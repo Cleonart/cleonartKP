@@ -1,0 +1,1 @@
+export let ENDPOINT = "http://127.0.0.1/netsq"
