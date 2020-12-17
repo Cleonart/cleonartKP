@@ -25,18 +25,21 @@
 		<!-- end promo with headline -->
 
 		<!-- start headline callback -->
-		<div class="bg-gray-100">
+		<div class="bg-gray-100" style="background: url('../../assets/189 .jpg');">
       		<div class="mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8">
           		<p class="text-3xl text-center font-bold tracking-tight text-gray-800 sm:text-4xl mx-auto">Tidak pake tabung, tidak mengeluarkan uang anda<br/>tidak meninggalkan pekerjaan anda</p>
-
-        <div class="mt-6 mx-auto flex">
-          <div class="rounded-md shadow mx-auto">
-            <a :href="'/#/' + id + '/register'" class="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 pointer-cursor">
-             Bergabung Sekarang
-            </a>
+        		<div class="mt-6 mx-auto flex">
+          			<div class="rounded-md shadow mx-auto">
+          				<a :href="'/#/' + id + '/register'" class="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 pointer-cursor">Bergabung Sekarang</a>
+          			</div>
+          		</div>
+          	</div>
           </div>
-        </div>
-      </div>
-    </div>
 	</div>
 </template>
+
+<script type="text/javascript">
+	export default{
+		props : ['id']
+	}
+</script>

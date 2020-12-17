@@ -1,12 +1,21 @@
 <template>
 	<div>
 		<Header/>
+		<Modal ref="modal" />
 		<section class="text-gray-700 body-font">
 			<div class="container mt-5 mx-auto mb-10">
-			
-				<form class="lg:w-6/6 md:w-1/3 bg-gray-200 rounded-lg p-8 mx-auto flex flex-col md:ml-auto w-full mt-10 md:mt-0" @submit.prevent="onSubmit">
+
+				<form class="lg:w-2/6 md:w-3/3 bg-gray-200 rounded-lg p-8 mx-auto flex flex-col md:ml-auto w-full mt-10 md:mt-0" @submit.prevent="onSubmit">
+
 					<h2 class="text-gray-900 text-lg font-bold title-font mb-5">Mendaftar Menjadi Enterpriser</h2>
 					
+					<transition name="fade">
+						<div class="bg-red-50 rounded mb-3 flex pb-2 pt-3 pl-3.5" v-if="error_container">
+							<svg class="w-6 stroke-current text-red-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
+							<p class="text-red-400 font-medium text-sm pl-2">{{error_message}}</p>
+						</div>
+					</transition>
+
 					<!-- nama lengkap -->
 					<div class="relative mb-2">
 						<label for="full_name" class="leading-7 text-sm text-gray-600">Nama Lengkap</label>
@@ -25,16 +34,10 @@
 						<input required type="password" oninvalid="this.setCustomValidity('Password harus dimasukan')" oninput="setCustomValidity('')"  v-model="register_data.enterpriser_password" placeholder="****" id="password" name="password" :class="input.css">
 					</div>
 
-					<!-- nomor telepon -->
+					<!-- password konfirmasi -->
 					<div class="relative mb-2">
-						<label for="telephone-number" class="leading-7 text-sm text-gray-600">No Telepon</label>
-						<input required type="number" oninvalid="this.setCustomValidity('Nomor Telepon harus dimasukan')" oninput="setCustomValidity('')"  v-model="register_data.enterpriser_telephone_number" placeholder="08xx xxxx xxxx" id="telephone-number" name="telephone-number" :class="input.css">
-					</div>
-
-					<!-- Link Referal -->
-					<div class="relative mb-2">
-						<label for="email" class="leading-7 text-sm text-gray-600">Buat Link Referal</label>
-						<input required type="text" oninvalid="this.setCustomValidity('Link Referal harus dimasukan')" oninput="setCustomValidity('')" v-model="register_data.enterpriser_link_referral" placeholder="Cth. john20" id="text" name="text" :class="input.css">
+						<label for="password" class="leading-7 text-sm text-gray-600">Konfirmasi Password</label>
+						<input required type="password" oninvalid="this.setCustomValidity('Masukan password kembali')" oninput="setCustomValidity('')"  v-model="password_again" placeholder="****" id="password" name="password" :class="input.css">
 					</div>
 
 					<!-- join button -->
@@ -58,6 +61,7 @@
 
 	import {ENDPOINT} from '../../function.js';
 	import Header from '../Komponen/header.vue';
+	import Modal from '../Komponen/modal.vue';
 	const axios = require('axios');
 
 	export default{
@@ -67,6 +71,13 @@
 				// referee data
 				id : "",
 				name : "",
+
+				// error handler
+				error_container : false,
+				error_message : '',
+
+				modal_state : false,
+				password_again : '',
 
 				register_data : {
 					enterpriser_name  : "",
@@ -90,6 +101,7 @@
 					 .then(function(response){
 					 	console.log(response.data);
 					 	if(response.data != null) {
+					 		app.id   = response.data.enterpriser_id;
 					 		app.name = response.data.enterpriser_name;
 					 		sessionStorage.setItem("referral_id", response.data.enterpriser_link_referral);
 					 	}
@@ -103,10 +115,30 @@
 			},
 
 			onSubmit : function(){
+				
+				// resetting form and reconstruct form
+				this.error_container = false;
+				this.error_message	 = "";
+				this.enterpriser_link_referee = this.id;
+
+				// validasi jika password sama dengan konfirmasi password
+				if(this.register_data.enterpriser_password != this.password_again){
+					this.error_container = true;
+					this.error_message	 = "Kombinasi password salah";
+					this.register_data.enterpriser_password	= "";
+					this.password_again	= "";
+					return;
+				}
+
+				// membuka dan mejalankan popup
+				this.$refs.modal.open({
+					title : 'Anda yakin?',
+					text  : 'Dengan mendaftar anda menjamin semua data yang telah dimasukan telah benar dan tidak ada kesalahan'
+				});
+				
 				var app = this;
 				let url = ENDPOINT + "/member/add.php";
 				let payload = JSON.stringify(app.register_data);
-				this.enterpriser_link_referee = this.id;
 
 				axios.post(url, payload)
 					.then(function(response){
@@ -117,12 +149,21 @@
 
 					})
 			},
+
+			changeModalState : function(){
+				this.modal_state = true;
+			}
 		},
+		
 		components : {
-			Header
+			Header,
+			Modal
 		},
-		created(){
+
+		mounted(){
 			this.getData(this.$route.params.id);
+			window.scrollTo(0, 0)
+			//this.$refs.test.open()
 		}
 	}
 </script>
