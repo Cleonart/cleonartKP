@@ -35,8 +35,13 @@
             </svg>
             <span class="ml-1 font-medium text-2xl my-1">sehatque</span>
 		</div>	
-        <h1 class="text-2xl tracking-tight font-bold text-gray-900 sm:text-1xl md:text-1x4 text-center mb-5">
-			<span class="text-gray-800 xl:inline font-medium">Nampaknya halaman yang anda tuju<br/>tidak dapat ditemukan</span>
+            <h1 class="text-2xl tracking-tight font-bold text-gray-900 sm:text-1xl md:text-1x4 text-center mb-5">
+                  <span class="text-gray-800 xl:inline font-medium">Nampaknya halaman yang anda tuju<br/>tidak dapat ditemukan</span>
        	</h1>
+            <div class="mt-6 mx-auto flex">
+                  <div class="rounded-md shadow mx-auto">
+                        <a class="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-bold rounded-md text-black bg-yellow-500 pointer-cursor">Anda enterpriser? Silahkan Login Disini</a>
+                  </div>
+            </div>
 	</div>
 </template>

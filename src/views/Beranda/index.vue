@@ -2,7 +2,7 @@
 	<div>
 		<Header/>
     	<Hero :id="id" :name="name"/>
-    	<PromoHeadline/>
+    	<PromoHeadline :id="id"/>
     	<PromoFeatures :id="id"/>
     	<Products/>
     	<Callback :id="id"/>
