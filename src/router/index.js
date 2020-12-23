@@ -5,6 +5,9 @@ import Mendaftar from '../views/Mendaftar/index.vue'
 import NotFound from '../views/404/index.vue'
 import Login from '../views/Login/index.vue'
 import ConfirmEmail from '../views/Layanan/confirmEmail.vue'
+import Profile from '../views/Enterpriser/profile.vue'
+
+import EmailVerify from '../views/Layanan/send_email_confirm.vue'
 
 Vue.use(VueRouter)
 
@@ -15,7 +18,16 @@ const routes = [
     name: 'Login',
     component: Login
   },
-
+  {
+    path: '/admin/profil',
+    name: 'Profil',
+    component: Profile
+  },
+  {
+    path: '/confirm/email/send/:email_address',
+    name: 'Send Email',
+    component: EmailVerify
+  },
   {
     path: '/confirm/email/:auth_code',
     name: 'ConfirmEmail',

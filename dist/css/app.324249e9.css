@@ -1,0 +1,1 @@
+.pointer-cursor{cursor:pointer;transition:all .2s ease}.pointer-cursor:hover{opacity:.5}.fade-enter-active,.fade-leave-active{transition:opacity .5s}.fade-enter,.fade-leave-to{opacity:0}.slide_down-enter-active,.slide_down-leave-active{transition:all .3s ease}.slide_down-enter,.slide_down-leave-to{transform:translateY(-10px);opacity:0}

@@ -25,4 +25,13 @@
       opacity: 0;
   }
 
+  .required-field{
+
+  }
+
+  .required-field::after{
+    content:'*';
+    color:red;
+  }
+
 </style>

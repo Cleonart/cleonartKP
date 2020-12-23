@@ -43,7 +43,7 @@
 					 .then(function(response){
 					 	console.log(response.data);
 					 	if(response.data != null) {
-					 		app.name = response.data.enterpriser_name;
+					 		app.name = response.data.enterpriser_first_name + " " + response.data.enterpriser_last_name;
 					 		sessionStorage.setItem("referral_id", response.data.enterpriser_link_referral);
 					 	}
 					 	else{

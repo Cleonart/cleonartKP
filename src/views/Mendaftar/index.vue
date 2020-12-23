@@ -47,12 +47,6 @@
 							</transition>
 							<!-- END error container -->
 
-							<!-- nama lengkap -->
-							<div class="relative mb-2">
-								<label for="full_name" class="leading-7 text-sm text-gray-600">Nama Lengkap</label>
-								<input required oninvalid="this.setCustomValidity('Nama lengkap harus dimasukan')" oninput="setCustomValidity('')" v-model="register_data.enterpriser_name" type="text" placeholder="John Doe" id="full_name" name="full_name" :class="input.css">
-							</div>
-
 							<!-- email -->
 							<div class="relative mb-2">
 								<label for="email" class="leading-7 text-sm text-gray-600">Email</label>
@@ -115,7 +109,6 @@
 				password_again : '',
 
 				register_data : {
-					enterpriser_name  : "",
 					enterpriser_email : "",
 					enterpriser_password : "",
 					enterpriser_link_referee : "",
@@ -142,7 +135,7 @@
 					 	console.log(response.data);
 					 	if(response.data != null) {
 					 		app.id   = response.data.enterpriser_id;
-					 		app.name = response.data.enterpriser_name;
+					 		app.name = response.data.enterpriser_first_name + " " + response.data.enterpriser_last_name;
 					 		sessionStorage.setItem("referral_id", response.data.enterpriser_link_referral);
 					 	}
 					 	else{
@@ -211,6 +204,7 @@
 						// jika pendaftaran berhasil
 						else if(error_code == 'success'){
 							app.register_container = false;
+							app.$router.replace('/confirm/email/send/' + app.register_data.enterpriser_email);
 						}
 
 						loader.hide();
