@@ -11,7 +11,7 @@
 				<div class="ml-9">
 					<p class="text-xl font-bold mb-2">Periksa email anda</p>
 					<p class="text-gray-500 mb-6 text-base">Email verifikasi akun dikirimkan ke <b class="text-blue-600">{{email_address}}</b><br/>Cek email anda dan silahkan tekan link konfirmasi untuk melanjutkan</p>
-					<p class="text-sm text-gray-700">Tidak menerima email? <button class="ml-3 rounded font-medium text-sm border text-gray-800 border-gray-300 px-3 py-2">Kirim Email Lagi</button></p>
+					<p class="text-sm text-gray-700">Tidak menerima email? <button @click="sendEmailConfirmation()" class="ml-3 rounded font-medium text-sm border px-3 py-2" :class="timer > 0 ? 'text-gray-800 border-gray-300' : 'bg-blue-800 border-blue-300 text-white'">Kirim Email Lagi <span v-if="timer > 0">dalam {{timer}} detik</span></button></p>
 				</div>
 			</div>
 
@@ -31,17 +31,21 @@
 				<div class="ml-9">
 					<p class="text-xl font-bold mb-2">Email tidak terdaftar</p>
 					<p class="text-gray-500 mb-6 text-base">Verifikasi akun untuk email <b class="text-red-500">{{email_address}}</b><br/>Tidak berhasil dilakukan karena email tidak terdaftar</p>
-					<p class="text-sm text-gray-700">Anda belum terdaftar? <button class="ml-3 rounded font-medium text-sm border text-gray-800 border-gray-300 px-3 py-2">Mendatar Disini</button></p>
+					<router-link to="/"><p class="text-sm text-gray-700">Anda belum terdaftar? <button class="ml-3 rounded font-medium text-sm border text-gray-800 border-gray-300 px-3 py-2">Mendaftar Disini</button></p></router-link>
 				</div>
 			</div>
 
+			<Spinner v-if="message_show == ''" class="absolute transform top-1/2 left-1/2 -translate-x-2/4 -translate-y-2/4" />
+				
 		</transition>
 	</div>
 </template>
 
 <script type="text/javascript">
+
 	import Header from '../Komponen/header.vue';
 	import Footer from '../Komponen/footer.vue';
+	import Spinner from '../Komponen/spinner.vue';
 	
 	import {ENDPOINT} from '../../function.js';
 	const axios = require('axios');
@@ -49,14 +53,60 @@
 		data(){
 			return{
 				email_address : '',
-				message_show  : 'ban',
+				message_show  : 'verify',
+
+				timer : 60,
+
 			}
 		},
+		
 		components : {
-			Header, Footer
+			Header, Footer, Spinner
+		},
+
+		methods : {
+			sendEmailConfirmation : function(){
+				this.message_show = "";
+				var app = this;
+				var url = ENDPOINT + "/member/email_send_link_verification.php?email_address=" + this.email_address;
+
+				axios.get(url)
+					 .then(response => {
+					 	let error_code = response.data.error_code;
+					 	console.log(response);
+					 	switch(error_code){
+					 		case 'email_verified' : 
+					 			app.message_show = "verified";
+					 			break;
+					 		case 'email_verify' : 
+					 			app.message_show = "verify";
+					 			app.sendLinkTimer();
+					 			break;
+					 		case 'email_not_registered' : 
+					 			app.message_show = "ban";
+					 			break;
+					 	}
+
+					 })
+					 .catch(error => {
+
+					 })
+			},
+
+			sendLinkTimer : function(){
+				var app = this;
+				app.timer = 60;
+				setInterval(function(){
+					if (app.timer > 0) {
+						app.timer--;
+					}
+				}, 1000);
+			}
+
 		},
 		created(){
 			this.email_address = this.$route.params.email_address;
+			this.sendEmailConfirmation();
 		}	
 	}
 </script>

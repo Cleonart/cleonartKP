@@ -1,16 +1,6 @@
 <template>
 	<div>
-
-		<!-- header -->
-		<div class="w-full border-b-2 border-gray-100 flex">
-			<div class="mx-56 pt-4 pb-4">
-				<a class="pb-4 pl-2 pr-2 font-medium text-md mr-4">Beranda</a>
-				<a class="border-b-2 pb-4 pl-2 pr-2 border-blue-800 font-medium text-md">Profil dan Data Diri</a>
-			</div>
-		</div>
-
 		<div class="mx-56">
-
 			<div class="mt-5">
 
 				<div class="bg-red-100 pt-4 pb-4 pl-4 rounded mb-8 flex">
@@ -31,7 +21,7 @@
 					</div>
 
 					<!-- pengaturan profil [form] -->
-		      		<form class="mt-5 md:mt-0 md:col-span-2" @submit.prevent>
+		      		<form class="mt-5 md:mt-0 md:col-span-2" @submit.prevent="onSubmit('profil_data')">
 
 		          		<!-- link referral -->
 		            	<div class="grid grid-cols-3 gap-6">
@@ -41,7 +31,7 @@
 		                		</label>
 		                		<div class="mt-1 flex rounded-md shadow-sm">
 		                			<span class="inline-flex items-center px-3 rounded-l-md border border-r-0 border-gray-300 bg-gray-50 text-gray-500 text-sm hover:bg-blue-600 hover:text-white">http://localhost:8080/#/</span>
-		                			<input required type="text" name="link_referral" id="-ml-1 company_website" class="flex-1 block w-full rounded-none border-2 rounded-r-md sm:text-sm border-gray-300 py-2 pl-3" placeholder="Kode Referral anda, Cth : sehatpintar">
+		                			<input v-model="profil_data.link_referral" required type="text"  name="link_referral" id="-ml-1 company_website" class="flex-1 block w-full rounded-none border-2 rounded-r-md sm:text-sm border-gray-300 py-2 pl-3" placeholder="Kode Referral anda, Cth : sehatpintar">
 		                		</div>
 		                	</div>
 		                </div>
@@ -106,7 +96,7 @@
 		                		<input disabled v-model="personal_data.email.address"
 		                		       type="email" :class="css.input + (personal_data.email.verified ? css.input_success : css.input_error ) " 
 		                		       max="40" placeholder="Cth. johndoe@gmail.com" class="mb-1">
-		                		<span v-if="personal_data.email.verified ? false : true" class="text-sm text-red-500 font-medium">Email belum terverifikasi <a :href="'/#/confirm/email/' + personal_data.email.verified" ><u>Kirim email verifikasi disini</u></a></span>
+		                		<span v-if="personal_data.email.verified ? false : true" class="text-sm text-red-500 font-medium">Email belum terverifikasi <a :href="'/#/confirm/email/send/' + personal_data.email.address" ><u>Kirim email verifikasi disini</u></a></span>
 		                		<span v-if="personal_data.email.verified ? true : false" class="text-sm text-green-500 font-medium">Email telah terverifikasi</span>
 							</div>
 
@@ -191,7 +181,7 @@
 <script type="text/javascript">
 	
 	import {ENDPOINT} from '@/function.js'
-
+	const axios = require('axios');
 	export default{
 		data(){
 			return{
@@ -240,13 +230,14 @@
 				this.css.date_style = "";
 
 				let json_data = {
-					enterpriser_id : 'd',
+					enterpriser_id : sessionStorage.getItem('id'),
 					payload : form_id == 'profil_data' ? app.profil_data : app.personal_data 
 				};
 				
 				// [profil data]
 				if(form_id == 'profil_data'){
-					data = JSON.stringify(this.profil_data);
+					url  += 'member/update_profil.php';  
+					data = JSON.stringify(json_data);
 				}
 
 				// [personal data]
@@ -257,18 +248,38 @@
 					}
 					data = JSON.stringify(this.personal_data);
 				}
-
+				console.log(json_data);
 				// mengirim data ke API
 				axios.post(url, data)
 					 .then(function(response) {
-						// body...
+						console.log(response);
+						if (response.data.error_code == 'same_ref') {
+							alert("Link Referral sudah digunakan, silahkan coba lagi dengan nama lain");
+						}
+						else if(response.data.error_code == 'success'){
+							alert("Link Referral berhasil diubah");
+							sessionStorage.setItem("ref", app.profil_data.link_referral);
+						}
 					 })
 					 .catch(function(error){
 
 					 })
 
-			}
+			},
 
+			getData : function(){
+				var app = this;
+				let id = sessionStorage.getItem('ref');
+				let url  = ENDPOINT + "/member/get.php?id=" + id;
+				axios.get(url)
+				     .then(function(response){
+				     	app.profil_data.link_referral = response.data.enterpriser_link_referral;
+
+				     })
+			}
+		},
+		created(){
+			this.getData();
 		}
 	}
 </script>

@@ -1,6 +1,10 @@
 <template>
   <div id="app">
-    <transition name="fade">
+
+    <!-- header for admin -->
+    <Header v-if="show_header_admin" />
+
+    <transition name="fade" mode="out-in">
       <router-view/>
     </transition>
   </div>
@@ -35,3 +39,41 @@
   }
 
 </style>
+
+<script type="text/javascript">
+  import Header from './views/Enterpriser/header.vue';
+  export default{
+    components : {
+      Header
+    },
+    data(){
+      return{
+        show_header_admin : true
+      }
+    },
+    watch : {
+      "$route" : function(oldval, newval){
+        console.log(this.$route);
+        var str = this.$route.path;
+        var res = str.split("/");
+        if (res[1] == 'admin') {
+          this.show_header_admin = true;
+        }
+        else{
+          this.show_header_admin = false;
+        }
+      }
+    },
+    
+    created(){
+        var str = this.$route.path;
+        var res = str.split("/");
+        if (res[1] == 'admin') {
+          this.show_header_admin = true;
+        }
+        else{
+          this.show_header_admin = false;
+        }
+    }
+  }
+</script>

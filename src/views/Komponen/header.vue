@@ -39,11 +39,11 @@
 		    </a>
 		    <nav class="md:ml-auto flex flex-wrap items-center text-base justify-center">
 		      <a class="mr-5 hover:text-gray-900">Tentang Kami</a>
-		      <a class="mr-5 hover:text-gray-900">Produk</a>
+		      <!--<a class="mr-5 hover:text-gray-900">Produk</a>
 		      <a class="mr-5 hover:text-gray-900">Galeri Kami</a>
 		      <a class="mr-5 hover:text-gray-900">Berita</a>
 		      <a class="mr-5 hover:text-gray-900">Keuntungan</a>
-		      <a class="mr-5 hover:text-gray-900">Testimoni</a>
+		      <a class="mr-5 hover:text-gray-900">Testimoni</a>-->
 		    </nav>
 		    <a href="/#/login">
 			    <button class="inline-flex items-center bg-blue-600 text-white font-medium py-2 px-1 border-0 py-1 px-3 focus:outline-none hover:bg-gray-300 rounded text-base mt-4 md:mt-0">Login

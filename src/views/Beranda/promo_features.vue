@@ -7,7 +7,7 @@
 		    <div class="flex flex-col text-center w-full mb-8">
 		      <h2 class="text-xs text-blue-500 tracking-widest font-medium title-font mb-4">SEHATQUE NETWORK</h2>
 		      <h1 class="sm:text-3xl text-2xl font-bold title-font text-gray-800">Sudah siap menjadi Enterpriser Milenial?</h1>
-		      <p class="lg:w-2/3 mx-auto mt-2 text-lg text-gray-600">Dapatkan pelatihan dan ebook <b>senilai jutaan rupiah</b> serta<br/> Website Pribadi Sebagai Tools Bisnis Secara Gratis</p>
+		      <p class="lg:w-2/3 mx-auto mt-2 text-lg text-gray-600">Dapatkan pelatihan dan ebook <b class="text-2xl text-blue-500">senilai jutaan rupiah</b> serta<br/> Website Pribadi Sebagai Tools Bisnis Secara Gratis</p>
 		    </div>
 		    <!-- end title -->
 

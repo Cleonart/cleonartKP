@@ -1,6 +1,5 @@
 <template>
 	<div>
-		<img src="../../assets/backdrop_daftar.svg" class="z-1 w-full absolute opacity-25">
 		<Header class="relative" />
 		
 		<!-- modal -->
@@ -28,7 +27,6 @@
 					</div>
 				</transition>
 
-					
 				<!-- form untuk melakukan pendaftaran -->
 				<transition name="fade" mode="out-in">
 					<form class="lg:w-2/6 md:w-3/3 bg-gray-200 rounded-lg p-8 mx-auto flex flex-col md:ml-auto w-full mt-10 md:mt-0" 
@@ -46,6 +44,23 @@
 								</div>
 							</transition>
 							<!-- END error container -->
+
+							<!-- first name and last name -->
+							<div class="relative mb-2 grid grid-cols-2 gap-3">
+
+								<!-- first name -->
+								<div>
+									<label for="email" class="leading-7 text-sm text-gray-600">Nama Depan</label>
+									<input required type="text" oninvalid="this.setCustomValidity('Nama depan harus dimasukan')" oninput="setCustomValidity('')" v-model="register_data.enterpriser_first_name" placeholder="John" id="email" name="email" :class="input.css">
+								</div>
+
+								<!-- last name -->
+								<div>
+									<label for="email" class="leading-7 text-sm text-gray-600">Nama Belakang</label>
+									<input required type="text" oninvalid="this.setCustomValidity('Nama Belakang harus dimasukan')" oninput="setCustomValidity('')" v-model="register_data.enterpriser_last_name" placeholder="Doe"  qname="email" :class="input.css">
+								</div>
+
+							</div>
 
 							<!-- email -->
 							<div class="relative mb-2">
@@ -109,6 +124,8 @@
 				password_again : '',
 
 				register_data : {
+					enterpriser_first_name : "",
+					enterpriser_last_name : "",
 					enterpriser_email : "",
 					enterpriser_password : "",
 					enterpriser_link_referee : "",
@@ -154,8 +171,7 @@
 				// resetting form and reconstruct form
 				this.error_container = false;
 				this.error_message	 = "";
-				this.enterpriser_link_referee = this.id;
-
+				
 				// validasi jika password sama dengan konfirmasi password
 				if(this.register_data.enterpriser_password != this.password_again){
 					this.error_container = true;
@@ -168,7 +184,7 @@
 				// membuka dan mejalankan popup
 				this.$refs.modal.open({
 					title : 'Anda yakin?',
-					text       : 'Dengan mendaftar anda menjamin semua data yang telah dimasukan telah benar dan tidak ada kesalahan',
+					text  : 'Dengan mendaftar anda menjamin semua data yang telah dimasukan telah benar dan tidak ada kesalahan',
 					icon       : 'question'
 				});
 				
@@ -228,6 +244,8 @@
 
 		mounted(){
 			this.getData(this.$route.params.id);
+			this.id = this.$route.params.id;
+			this.register_data.enterpriser_link_referee = this.id;
 			window.scrollTo(0, 0);
 			//this.$refs.test.open()
 		}
